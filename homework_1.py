@@ -1,4 +1,4 @@
-   # Возврат квадрата чисел
+# Возврат квадрата чисел
 def power_numbers(*args):
       return [number*number for number in args]
 print(power_numbers(1, 2, 5, 7))
@@ -13,14 +13,20 @@ def is_prime(num):
             count +=1
     return f"{num}  True " if count == 2 else f"{num} False"
 
-# Четные, не четные числа
+# Вывод четных, нечетных, просых чисел
 def filter_numbers(*args):
-    for number in args:
-      if(number % 2) == 0:
-        print(f"{number} is even number")
-      elif(number % 2) == 1:
-        print(f"{number} is odd number")
-      continue
-    return args 
-filter_numbers (1, 2, 5, 7)       
-print(is_prime(47))
+    ODD = [
+        num for num in args
+        if num % 2 == 1
+    ]
+    print(ODD)
+    EVEN = [
+        num for num in args
+        if num % 2 == 0
+    ]
+    print(EVEN)
+    PRIME = [ 
+        is_prime(num) for num in args
+    ]
+    print(PRIME)
+filter_numbers(2, 1, 3, 5, 4)     
