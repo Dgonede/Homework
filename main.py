@@ -24,5 +24,3 @@ def filter_numbers(*args):
     return args 
 filter_numbers (1, 2, 5, 7)       
 print(is_prime(47))
-
-
