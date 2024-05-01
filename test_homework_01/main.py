@@ -29,4 +29,4 @@ def filter_numbers(*args):
         is_prime(num) for num in args
     ]
     print(PRIME)
-filter_numbers(2, 1, 3, 5, 4)    
+filter_numbers(2, 1, 3, 5, 4) 
