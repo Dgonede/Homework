@@ -1,6 +1,6 @@
 from itertools import repeat
 import pytest
-from faker import Faker
+from faker import Faker # type: ignore
 
 homework = pytest.importorskip("homework_01.main")
 
