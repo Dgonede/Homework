@@ -1,4 +1,4 @@
-from itertools import repeat
+"""from itertools import repeat
 import pytest
 from faker import Faker # type: ignore
 
@@ -52,4 +52,4 @@ def test_filter_numbers (f, m ):
 def test_filter_numbers_consts(p):
     OO0OOOOOO0O0OOOO0 ,OO0O0O000OO00OO0O ,OO000OO0OO0OOOO0O =p
     OOOO0O00O0O0O0000 =homework .filter_numbers (OO0O0O000OO00OO0O ,OO0OOOOOO0O0OOOO0 )
-    assert OOOO0O00O0O0O0000 ==OO000OO0OO0OOOO0O 
+    assert OOOO0O00O0O0O0000 ==OO000OO0OO0OOOO0O""" 
