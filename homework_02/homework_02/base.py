@@ -1,5 +1,5 @@
 from abc import ABC
-from exceptions import NotEnoughFuelError, LowFuelError
+from homework_02.exceptions import NotEnoughFuelError, LowFuelError
 
 
 

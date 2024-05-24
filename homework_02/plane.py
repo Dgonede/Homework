@@ -1,5 +1,5 @@
-from exceptions import CarGoOverlordError
-from base import Vehicle
+from homework_02.exceptions import CarGoOverlordError
+from homework_02.base import Vehicle
 
 
 class Plane(Vehicle):

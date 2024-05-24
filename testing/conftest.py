@@ -1,3 +1,5 @@
-from utils import add_homework_path
+import sys
+from pathlib import Path
 
-add_homework_path(__file__)
+helpers = Path(__file__).resolve().parent / "helpers"
+sys.path.insert(0, str(helpers))
