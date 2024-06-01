@@ -1,4 +1,4 @@
-from homework_02.exceptions import Error
+from homework_02.exceptions import CargoOverload
 from homework_02.base import Vehicle
 
 
@@ -10,7 +10,7 @@ class Plane(Vehicle):
                 print(f"Now cargo = {cargo + weight} Kg")
                 
         else:
-            raise Error.cargoerror(f"Ошибка: Перегруз на {cargo + weight - max_cargo} kg")
+            raise CargoOverload(f"Ошибка: Перегруз на {cargo + weight - max_cargo} kg")
        
         
         
@@ -27,11 +27,12 @@ class Plane(Vehicle):
          
              
          
-my_car = Plane("cargo", "weight", "started", "fuel", "fuel_consumption", "max_cargo")
+
 
 def main():
-    my_car.load_cargo(300,400,700)
-    my_car.remove_all_cargo(300)
+    my_plane = Plane("cargo", "weight", "started", "fuel", "fuel_consumption", "max_cargo")    
+    my_plane.load_cargo(300,400,700)
+    my_plane.remove_all_cargo(300)
     
     
      

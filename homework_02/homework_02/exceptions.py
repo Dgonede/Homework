@@ -1,23 +1,14 @@
 class Error(Exception):
-     def cargoerror(self):
-          print("CarGoOverlord")
+     pass
+          
      
-     def lowfuelerror(self):
-          print("LowFuelError")
-     
-     def fuelerror(self):
-          print("NotEnoughFuelError")
+class CargoOverload(Error):
+     pass
 
+class LowFuelError(Error):
+     pass
 
+class NotEnoughFuel(Error):
+     pass
+   
     
-exception = Error()
-
-def main():
-     exception.cargoerror()
-     exception.fuelerror()
-     exception.lowfuelerro()
-
-
-if __name__=="main":
-     main()
-        

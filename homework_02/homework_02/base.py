@@ -1,5 +1,5 @@
 from abc import ABC
-from exceptions import Error
+from exceptions import LowFuelError, NotEnoughFuel
 
 
 
@@ -28,7 +28,7 @@ class Vehicle(ABC):
         elif started == 0 and fuel > 0:
              print(f"can start, fuel is {fuel}L")
         else:        
-            raise Error.lowfuelerror("Ошибка: Малый запас топлива")
+            raise LowFuelError("Ошибка: Малый запас топлива")
     
 
 
@@ -44,7 +44,7 @@ class Vehicle(ABC):
                 print("Chek fuel")
                
         else:
-            raise Error.fuelerror("Ошибка: Недостаточно топлива")
+            raise NotEnoughFuel("Ошибка: Недостаточно топлива")
         
         
 
@@ -59,9 +59,9 @@ my_car_go = Vehicle("weight", "started", "fuel", "fuel_consumption","cargo", "ma
 def main():
     my_car_go.read_vehicle(300, 1, 40, 12, 400, 700)
     print()
-    my_car_go.move(40,1,80)
+    my_car_go.move(0,1,0)
     print()
-    my_car_go.start(40,1)
+    my_car_go.start(0,0)
     
     
      
