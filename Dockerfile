@@ -14,7 +14,7 @@ COPY pyproject.toml .
 
 COPY poetry.lock .
 
-COPY fastapi_app ./
+COPY homework_03 ./
 
 CMD ["uvicorn", "main:app", "--host",  "0.0.0.0", "--port", "5000"]
 
