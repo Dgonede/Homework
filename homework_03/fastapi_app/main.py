@@ -1,4 +1,4 @@
-__all__ = ("app",)
+__all__ = ("app", "Container",)
 
 from app import app
 import uvicorn
