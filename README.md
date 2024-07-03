@@ -5,7 +5,7 @@
         Admin= "Admin",                                            
         username= "Admin",                   
         email="admin@ya.ru",                            
-        password= "ADMIN123123"               правами                  
+        password="ADMIN123123"                                
                                             
           Admin = "Admin2",                  
         username= "jhon",                    
