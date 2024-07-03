@@ -14,7 +14,7 @@ COPY pyproject.toml .
 
 COPY poetry.lock .
 
-RUN poetry install --no-ansi
+RUN poetry install --no-ansi 
 
 COPY homework_03/fastapi_app ./
 
