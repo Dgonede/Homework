@@ -14,7 +14,7 @@ COPY poetry.lock .
 
 RUN poetry install --no-ansi 
 
-COPY homework_03/fastapi_app ./
+COPY homework_03 ./
 
 CMD ["uvicorn", "main:app", "--host",  "0.0.0.0", "--port", "5000"]
 
