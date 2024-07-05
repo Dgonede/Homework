@@ -8,8 +8,6 @@ RUN pip install "poetry==1.8.3" setuptools wheel
 
 RUN poetry config virtualenvs.create false
 
-RUN pip install fastapi uvicorn
-
 COPY pyproject.toml .
 
 COPY poetry.lock .
