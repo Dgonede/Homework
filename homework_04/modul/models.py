@@ -3,7 +3,6 @@ from sqlalchemy import MetaData
 from sqlalchemy.orm import DeclarativeBase
 from sqlalchemy.orm import declared_attr
 import config
-from typing import TYPE_CHECKING
 import secrets
 from sqlalchemy.orm import relationship
 from datetime import datetime
