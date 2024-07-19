@@ -108,6 +108,7 @@ async def fetch_users_with_posts(
     for user in users:
         print("+", user)
         for post in user.posts:
+            assert post.author in users
             print("  -", post)
 
     return users
@@ -138,6 +139,8 @@ async def fetch_all_posts_with_authors(
     print("posts:", posts)
 
     for post in posts:
+        assert post.author in posts
+        assert post in post.author.posts
         print("+", post)
         print("= author:", post.author)
 
