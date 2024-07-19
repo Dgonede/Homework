@@ -8,7 +8,7 @@ from sqlalchemy import update
 from sqlalchemy.orm import joinedload
 from sqlalchemy.orm import selectinload
 from sqlalchemy.ext.asyncio import AsyncSession
-from models import (
+from .models import (
     async_session,
     async_engine, 
     Base, 
@@ -272,8 +272,8 @@ async def async_main():
         await fetch_all_posts(session)
        
 def main():
-    async_main()
+    asyncio.run(async_main())
 
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    main()
