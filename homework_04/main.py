@@ -21,10 +21,7 @@ from modul.models import (
 async def create_tables():
     async with async_engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
-    # # Base.metadata.drop_all(bind=engine)
-    # print("Creating tables...", Base.metadata.tables)
-    # Base.metadata.create_all(bind=engine)
-
+    
 async def create_user(
     session: AsyncSession,
     username: str,
@@ -45,12 +42,10 @@ async def create_post(
     user_id: int,
 ) -> Post:
     post = Post(title=title, user_id=user_id)
-    # post.author = user
     session.add(post)
     await session.commit()
     print("post created:", post)
     return post
-
 
 async def create_users(
     session: AsyncSession,
@@ -83,10 +78,6 @@ async def create_posts(
     await session.commit()
     print("saved posts:", posts)
     return posts
-
-
-
-
 
 
 async def fetch_all_users(session: AsyncSession) -> Sequence[User]:
@@ -163,18 +154,6 @@ async def fetch_user_by_username(session: AsyncSession, username: str) -> User |
     print("user for username", repr(username), "result:", user)
     return user
 
-
-SQL = """
-UPDATE users 
-SET email=concat(
-    lower(users.username), 
-    '@ya.ru'::VARCHAR
-)
-WHERE users.email IS NULL 
-    AND length(users.username) < 5::INTEGER;
-"""
-
-
 async def set_emails_for_null_email_users_with_username_limit(
     session: AsyncSession,
     username_size_limit: int,
@@ -211,7 +190,6 @@ async def set_emails_for_null_email_users_with_username_limit(
 
     await session.execute(stmt)
     await session.commit()
-
 
 
 async def set_body_for_null_post_table(
@@ -290,47 +268,11 @@ async def main():
         )
 
    
-
-
         await asyncio.gather(fetch_all_users(session))
         await asyncio.gather(fetch_users_with_posts(session))
 
         await fetch_all_posts(session)
-        # posts: Sequence[Post] = await fetch_all_posts_with_authors(session)
-        #
-        # for post in posts:
-        #     print("+", post)
-        #     print("= author:", post.author)
-
-        # await fetch_user_by_username(session, "bob")
-        # await fetch_user_by_username(session, "jack")
-        # await set_emails_for_null_email_users_with_username_limit(
-        # #     session,
-        # #     username_size_limit=5,
-        # #     domain="@ya.ru",
-        # # )
-        # await set_body_for_null_post_table(session, title_size_limit=20)
-
-
-
-        # await select_top_users_with_posts_sorted(session)
-
-        # запрашиваем посты авторов, у кого юзернейм длиной более 3 символов
-        # stmt = (
-        #     select(Post)
-        #     # .join(User)
-        #     # .join(User, Post.user_id == User.id)
-        #     .join(Post.author)
-        #     .where(func.length(User.username) > 3)
-        #     .options(
-        #         # joinedload(Post.author),
-        #         selectinload(Post.author),
-        #     )
-        #     .order_by(Post.id)
-        # )
-        #
-        # posts = session.scalars(stmt).all()
-        # print(posts)
+       
 
 
 if __name__ == "__main__":
