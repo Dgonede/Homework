@@ -89,5 +89,5 @@ async def test_main(users_data, posts_data):
 
     for post in posts:
         # check relationships
-        assert post.user in users
-        assert post in post.user.posts
+        assert post.author in users
+        assert post in post.author.posts
