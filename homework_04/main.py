@@ -8,7 +8,7 @@ from sqlalchemy import update
 from sqlalchemy.orm import joinedload
 from sqlalchemy.orm import selectinload
 from sqlalchemy.ext.asyncio import AsyncSession
-from .models import (
+from models import (
     async_session,
     async_engine, 
     Base, 
@@ -243,7 +243,7 @@ async def select_top_users_with_posts_sorted(
         print("+ user", user.id, user.username, "w/", posts_count, "posts")
 
 
-async def main():
+async def async_main():
     await create_tables()
     async with async_session() as session:
         await create_user(session, username="lone", email="lone@admin.com")
@@ -271,6 +271,8 @@ async def main():
 
         await fetch_all_posts(session)
        
+def main():
+    async_main()
 
 
 if __name__ == "__main__":
