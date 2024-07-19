@@ -20,3 +20,7 @@ app.include_router(secret_router)
 @app.get("/")
 def hello_root():
     return {"message": "Hellow"}
+
+@app.get("/ping/", status_code=200)
+def ping():
+    return {"message": "pong"}
