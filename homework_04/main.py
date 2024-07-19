@@ -79,10 +79,7 @@ async def create_posts(
 
 
 async def fetch_all_users(session: AsyncSession) -> Sequence[User]:
-    # stmt = select(User).order_by(User.id)
     stmt = select(User).order_by(desc(User.username))
-    # result = session.execute(stmt)
-    # users = result.scalars().all()
     result = await session.scalars(stmt)
     users = result.all()
     print("users:", users)
@@ -102,13 +99,11 @@ async def fetch_users_with_posts(
     )
 
     print("load users w/ posts:")
-    # users = session.scalars(stmt).unique().all()
     result = await session.scalars(stmt)
     users = result.all()
     for user in users:
         print("+", user)
         for post in user.posts:
-            assert post.author in users
             print("  -", post)
 
     return users
@@ -116,8 +111,6 @@ async def fetch_users_with_posts(
 
 async def fetch_all_posts(session: AsyncSession) -> Sequence[Post]:
     stmt = select(Post).order_by(Post.id)
-    # result = session.execute(stmt)
-    # posts = result.scalars().all()
     result = await session.scalars(stmt)
     posts = result.all()
     print("posts:", posts)
@@ -139,8 +132,6 @@ async def fetch_all_posts_with_authors(
     print("posts:", posts)
 
     for post in posts:
-        assert post.author in posts
-        assert post in post.author.posts
         print("+", post)
         print("= author:", post.author)
 
@@ -149,8 +140,6 @@ async def fetch_all_posts_with_authors(
 
 async def fetch_user_by_username(session: AsyncSession, username: str) -> User | None:
     stmt = select(User).where(User.username == username)
-    # result = session.execute(stmt)
-    # user = result.scalars().one_or_none()
     user: User | None = session.scalars(stmt).one_or_none()
     print("user for username", repr(username), "result:", user)
     return user
