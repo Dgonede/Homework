@@ -129,7 +129,7 @@ async def fetch_all_posts_with_authors(
     stmt = (
         select(Post)
         .options(
-            joinedload(Post.author),
+            selectinload(Post.author),
         )
         .order_by(Post.id)
     )
