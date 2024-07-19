@@ -78,7 +78,7 @@ class Post(Base):
     published_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=False))
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
     body: Mapped[str | None] = mapped_column(String(32), unique=True)
-    author: Mapped["User"] = relationship(back_populates="posts")
+    user: Mapped["User"] = relationship(back_populates="posts")
 
     def __repr__(self):
         return str(self)

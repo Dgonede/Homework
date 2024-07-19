@@ -129,7 +129,7 @@ async def fetch_all_posts_with_authors(
     stmt = (
         select(Post)
         .options(
-            joinedload(Post.author),
+            joinedload(Post.user),
         )
         .order_by(Post.id)
     )
@@ -139,7 +139,7 @@ async def fetch_all_posts_with_authors(
 
     for post in posts:
         print("+", post)
-        print("= author:", post.author)
+        print("= user:", post.user)
 
     return posts
 
