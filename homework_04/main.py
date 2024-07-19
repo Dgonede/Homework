@@ -129,7 +129,7 @@ async def fetch_all_posts_with_authors(
     stmt = (
         select(Post)
         .options(
-            joinedload(Post.user),
+            joinedload(Post.author),
         )
         .order_by(Post.id)
     )
@@ -139,7 +139,7 @@ async def fetch_all_posts_with_authors(
 
     for post in posts:
         print("+", post)
-        print("= user:", post.user)
+        print("= author:", post.author)
 
     return posts
 
@@ -265,7 +265,7 @@ async def async_main():
             
         )
 
-   
+        await asyncio.gather(fetch_all_posts_with_authors(session))
         await asyncio.gather(fetch_all_users(session))
         await asyncio.gather(fetch_users_with_posts(session))
 
