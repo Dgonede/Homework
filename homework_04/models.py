@@ -17,7 +17,7 @@ from sqlalchemy.orm import mapped_column
 
 PG_CONN_URI = os.environ.get("SQLALCHEMY_PG_CONN_URI") or "postgresql+asyncpg://postgres:password@localhost/postgres"
 
-async_engine = create_async_engine(PG_CONN_URI)
+async_engine = create_async_engine(PG_CONN_URI, echo=True)
 
 Session = async_sessionmaker(bind=async_engine)
 
