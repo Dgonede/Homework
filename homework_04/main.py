@@ -9,7 +9,7 @@ from sqlalchemy.orm import joinedload
 from sqlalchemy.orm import selectinload
 from sqlalchemy.ext.asyncio import AsyncSession
 from .models import (
-    async_session,
+    Session,
     async_engine, 
     Base, 
     User, 
@@ -237,7 +237,7 @@ async def select_top_users_with_posts_sorted(
 
 async def async_main():
     await create_tables()
-    async with async_session() as session:
+    async with Session() as session:
         await create_user(session, username="lone", email="lone@admin.com")
         gane: User = await create_user(session, username="gane", email=None)
         post_pg: Post = await create_post(

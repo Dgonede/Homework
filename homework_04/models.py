@@ -11,7 +11,7 @@ from sqlalchemy import ForeignKey
 from sqlalchemy import String
 from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
-from sqlalchemy.orm import sessionmaker
+
 
 
 PG_CONN_URI = os.environ.get("SQLALCHEMY_PG_CONN_URI") or "postgresql+asyncpg://postgres:password@localhost/postgres"
@@ -19,13 +19,9 @@ PG_CONN_URI = os.environ.get("SQLALCHEMY_PG_CONN_URI") or "postgresql+asyncpg://
 
 async_engine = create_async_engine(PG_CONN_URI)
 
-Session = sessionmaker(bind=async_engine)
+Session = async_sessionmaker(bind=async_engine)
 
-async_session = async_sessionmaker(
-    bind=async_engine,
-    expire_on_commit=False,
-    autocommit= False,
-)
+
 
 
 
