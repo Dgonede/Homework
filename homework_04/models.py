@@ -3,7 +3,9 @@ from sqlalchemy import MetaData
 from sqlalchemy.orm import DeclarativeBase
 from sqlalchemy.orm import declared_attr
 import os
+
 import secrets
+from os import getenv
 from sqlalchemy.orm import relationship
 from datetime import datetime
 from sqlalchemy import DateTime
@@ -15,11 +17,12 @@ from sqlalchemy.orm import mapped_column
 
 
 PG_CONN_URI = os.environ.get("SQLALCHEMY_PG_CONN_URI") or "postgresql+asyncpg://postgres:password@localhost/postgres"
+DB_ECHO = getenv("DB_ECHO", True)
 
 
 async_engine = create_async_engine(PG_CONN_URI)
 
-Session = async_sessionmaker(bind=async_engine, echo=True)
+Session = async_sessionmaker(bind=async_engine, url=PG_CONN_URI, echo=DB_ECHO)
 
 
 
