@@ -95,7 +95,7 @@ async def fetch_users_with_posts(
             # joinedload(User.posts),
             selectinload(User.posts),
         )
-        .order_by(User)
+        .order_by(User.username)
     )
 
     print("load users w/ posts:")
@@ -105,7 +105,6 @@ async def fetch_users_with_posts(
         print("+", user)
         for post in user.posts:
             print("  -", post)
-            print(" +", users)
 
     return users
 
