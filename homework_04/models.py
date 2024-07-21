@@ -5,7 +5,6 @@ from sqlalchemy.orm import declared_attr
 import os
 
 import secrets
-from os import getenv
 from sqlalchemy.orm import relationship
 from datetime import datetime
 from sqlalchemy import DateTime

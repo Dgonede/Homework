@@ -1,6 +1,5 @@
 import asyncio
 from collections.abc import Sequence
-import os
 from sqlalchemy import desc
 from sqlalchemy import func
 from sqlalchemy import select
@@ -138,50 +137,6 @@ async def fetch_all_posts_with_authors(
     return posts
 
 
-async def fetch_user_by_username(session: AsyncSession, username: str) -> User | None:
-    stmt = select(User).where(User.username == username)
-    user: User | None = session.scalars(stmt).one_or_none()
-    print("user for username", repr(username), "result:", user)
-    return user
-
-async def set_emails_for_null_email_users_with_username_limit(
-    session: AsyncSession,
-    username_size_limit: int,
-    domain: str,
-):
-    """
-
-    :param session:
-    :param username_size_limit:
-    :param domain: example: '@ya.ru'
-    :return:
-    """
-
-    new_email = (
-        func.concat(
-            func.lower(User.username),
-            domain.lower(),
-        )
-    )
-    stmt = (
-        update(User)
-        .where(
-            # empty email
-            User.email.is_(None),
-            # username len limit
-            func.length(User.username) < username_size_limit,
-        )
-        .values(
-            {
-                User.email: new_email,
-            }
-        )
-    )
-
-    await session.execute(stmt)
-    await session.commit()
-
-
 async def set_body_for_null_post_table(
     session: AsyncSession,
     title_size_limit: int,
@@ -218,21 +173,6 @@ async def set_body_for_null_post_table(
 
     await session.execute(stmt)
     await session.commit()
-
-
-async def select_top_users_with_posts_sorted(
-    session: AsyncSession,
-) -> None:
-    users_w_posts_count_stmt = (
-        select(User, func.count(Post.id).label('posts_count'))
-        .join(User.posts, isouter=True)
-        .group_by(User.id)
-        .order_by(func.count(Post.id).desc(), User.username)
-    )
-    result = await session.execute(users_w_posts_count_stmt)
-    result = result.all()
-    for user, posts_count in result:
-        print("+ user", user.id, user.username, "w/", posts_count, "posts")
 
 
 async def async_main():
