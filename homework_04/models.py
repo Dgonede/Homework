@@ -22,7 +22,7 @@ DB_ECHO = getenv("DB_ECHO", True)
 
 async_engine = create_async_engine(PG_CONN_URI)
 
-Session = async_sessionmaker(bind=async_engine, url=PG_CONN_URI, echo=DB_ECHO)
+Session = async_sessionmaker(bind=async_engine, echo=DB_ECHO)
 
 
 
