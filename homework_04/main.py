@@ -28,8 +28,6 @@ async def create_user(
     session.add(user)
 
     await session.commit()
-
-    print("user created:", user)
     return user
 
 
@@ -41,7 +39,6 @@ async def create_post(
     post = Post(title=title, user_id=user_id)
     session.add(post)
     await session.commit()
-    print("post created:", post)
     return post
 
 async def create_users(
@@ -53,11 +50,7 @@ async def create_users(
         for username in usernames
     ]
     session.add_all(users)
-    print("prepared users:", users)
-
     await session.commit()
-
-    print("saved users:", users)
     return users
 
 
@@ -71,9 +64,9 @@ async def create_posts(
         for title in titles
     ]
     session.add_all(posts)
-    print("prepared posts:", posts)
+    
     await session.commit()
-    print("saved posts:", posts)
+    
     return posts
 
 
@@ -81,7 +74,7 @@ async def fetch_all_users(session: AsyncSession) -> Sequence[User]:
     stmt = select(User).order_by(desc(User.username))
     result = await session.scalars(stmt)
     users = result.all()
-    print("users:", users)
+    
     return users
 
 
@@ -97,22 +90,20 @@ async def fetch_users_with_posts(
         .order_by(User.username)
     )
 
-    print("load users w/ posts:")
+    
     result = await session.scalars(stmt)
     users = result.all()
     for user in users:
-        print("+", user)
-        for post in user.posts:
-            print("  -", post)
-
-    return users
+        return user
+    for post in user.posts:
+        return post
 
 
 async def fetch_all_posts(session: AsyncSession) -> Sequence[Post]:
     stmt = select(Post).order_by(Post.id)
     result = await session.scalars(stmt)
     posts = result.all()
-    print("posts:", posts)
+    
     return posts
 
 
@@ -128,13 +119,10 @@ async def fetch_all_posts_with_authors(
     )
     result = await session.scalars(stmt)
     posts = result.all()
-    print("posts:", posts)
+    
 
     for post in posts:
-        print("+", post)
-        print("= user:", post.user)
-
-    return posts
+        return post
 
 
 async def set_body_for_null_post_table(
