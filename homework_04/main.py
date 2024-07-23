@@ -178,8 +178,8 @@ async def set_body_for_null_post_table(
 async def async_main():
     await create_tables()
     async with Session() as session:
-        await create_user(session, username="lone", email="lone@admin.com")
-        gane: User = await create_user(session, username="gane", email=None)
+        await session.create_user(username="lone", email="lone@admin.com")
+        gane: User = await session.create_user(session, username="gane", email=None)
         post_pg: Post = await create_post(
             session=session,
             title="Reander post",
@@ -188,7 +188,7 @@ async def async_main():
         )
         print("post pg:", post_pg)
         await create_users(session, "nick", "bob", "alice")
-        sam: User = await create_user(session, username="sam", email=None)
+        sam: User = await session.create_user(session, username="sam", email=None)
         await create_posts(
             session,
             "MySQL Intro",
