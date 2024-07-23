@@ -174,10 +174,11 @@ async def async_main():
             user_id=gane.id,
            
         )
-        print("post pg:", post_pg)
-        await create_users(session, "nick", "bob", "alice")
+        
+        
+        create_users(session, "nick", "bob", "alice")
         sam: User = await create_user(session, username="sam", email=None)
-        await create_posts(
+        create_posts(
             session,
             "MySQL Intro",
             "MariaDB Lesson",
@@ -185,11 +186,11 @@ async def async_main():
             
         )
 
-        await fetch_all_posts_with_authors(session)
-        await fetch_all_users(session)
-        await fetch_users_with_posts(session)
+        fetch_all_posts_with_authors(session)
+        fetch_all_users(session)
+        fetch_users_with_posts(session)
 
-        await fetch_all_posts(session)
+        fetch_all_posts(session)
        
 def main():
     asyncio.run(async_main())
