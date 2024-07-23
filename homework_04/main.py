@@ -199,7 +199,7 @@ async def async_main():
 
         await fetch_all_posts_with_authors(session)
         await fetch_all_users(session)
-        await asyncio.gather(fetch_users_with_posts())
+        await fetch_users_with_posts(session)
 
         await fetch_all_posts(session)
        
