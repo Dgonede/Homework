@@ -188,7 +188,7 @@ async def async_main():
 
         
 def main():
-    asyncio.run(async_main())
+    asyncio.run(async_main(Session))
 
 
 if __name__ == "__main__":
