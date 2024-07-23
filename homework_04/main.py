@@ -186,12 +186,7 @@ async def async_main():
             
         )
 
-        fetch_all_posts_with_authors(session)
-        fetch_all_users(session)
-        fetch_users_with_posts(session)
-
-        fetch_all_posts(session)
-       
+        
 def main():
     asyncio.run(async_main())
 
