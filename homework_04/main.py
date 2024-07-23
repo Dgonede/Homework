@@ -27,7 +27,7 @@ async def create_user(
     user = User(username=username, email=email)
     session.add(user)
 
-    await session.commit()
+   
     return user
 
 
@@ -38,7 +38,7 @@ async def create_post(
 ) -> Post:
     post = Post(title=title, user_id=user_id)
     session.add(post)
-    await session.commit()
+    
     return post
 
 async def create_users(
@@ -50,7 +50,7 @@ async def create_users(
         for username in usernames
     ]
     session.add_all(users)
-    await session.commit()
+    
     return users
 
 
@@ -65,7 +65,7 @@ async def create_posts(
     ]
     session.add_all(posts)
     
-    await session.commit()
+    
     
     return posts
 
@@ -176,7 +176,7 @@ async def async_main():
         )
         
         
-        create_users(session, "nick", "bob", "alice")
+        await create_users(session, "nick", "bob", "alice")
         sam: User = await create_user(session, username="sam", email=None)
         create_posts(
             session,
