@@ -27,7 +27,9 @@ async def create_user(
     user = User(username=username, email=email)
     session.add(user)
 
-   
+    await session.commit()
+
+    print("user created:", user)
     return user
 
 
@@ -38,7 +40,8 @@ async def create_post(
 ) -> Post:
     post = Post(title=title, user_id=user_id)
     session.add(post)
-    
+    await session.commit()
+    print("post created:", post)
     return post
 
 async def create_users(
@@ -50,7 +53,11 @@ async def create_users(
         for username in usernames
     ]
     session.add_all(users)
+    print("prepared users:", users)
+
     
+
+    print("saved users:", users)
     return users
 
 
@@ -64,9 +71,9 @@ async def create_posts(
         for title in titles
     ]
     session.add_all(posts)
+    print("prepared posts:", posts)
     
-    
-    
+    print("saved posts:", posts)
     return posts
 
 
@@ -74,7 +81,7 @@ async def fetch_all_users(session: AsyncSession) -> Sequence[User]:
     stmt = select(User).order_by(desc(User.username))
     result = await session.scalars(stmt)
     users = result.all()
-    
+    print("users:", users)
     return users
 
 
@@ -90,20 +97,22 @@ async def fetch_users_with_posts(
         .order_by(User.username)
     )
 
-    
+    print("load users w/ posts:")
     result = await session.scalars(stmt)
     users = result.all()
     for user in users:
-        return user
-    for post in user.posts:
-        return post
+        print("+", user)
+        for post in user.posts:
+            print("  -", post)
+
+    return users
 
 
 async def fetch_all_posts(session: AsyncSession) -> Sequence[Post]:
     stmt = select(Post).order_by(Post.id)
     result = await session.scalars(stmt)
     posts = result.all()
-    
+    print("posts:", posts)
     return posts
 
 
@@ -119,10 +128,13 @@ async def fetch_all_posts_with_authors(
     )
     result = await session.scalars(stmt)
     posts = result.all()
-    
+    print("posts:", posts)
 
     for post in posts:
-        return post
+        print("+", post)
+        print("= user:", post.user)
+
+    return posts
 
 
 async def set_body_for_null_post_table(
@@ -174,11 +186,10 @@ async def async_main():
             user_id=gane.id,
            
         )
-        
-        
+        print("post pg:", post_pg)
         await create_users(session, "nick", "bob", "alice")
         sam: User = await create_user(session, username="sam", email=None)
-        create_posts(
+        await create_posts(
             session,
             "MySQL Intro",
             "MariaDB Lesson",
@@ -186,10 +197,15 @@ async def async_main():
             
         )
 
-        
+        await fetch_all_posts_with_authors(session)
+        await fetch_all_users(session)
+        await fetch_users_with_posts(session)
 
-    
+        await fetch_all_posts(session)
+       
+def main():
+    asyncio.run(async_main())
 
 
 if __name__ == "__main__":
-    asyncio.run(async_main())
+    main()
