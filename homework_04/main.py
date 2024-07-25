@@ -26,7 +26,6 @@ async def create_user(
 ) -> User:
     user = User(username=username, email=email)
     session.add(user)
-
     await session.commit()
     return user
 
@@ -39,7 +38,6 @@ async def create_post(
     post = Post(title=title, user_id=user_id)
     session.add(post)
     await session.commit()
-    print("post created:", post)
     return post
 
 
@@ -49,19 +47,14 @@ async def fetch_all_posts_with_authors(
     stmt = (
         select(Post)
         .options(
-            selectinload(Post.user),
+            joinedload(Post.user),
         )
         .order_by(Post.id)
     )
     result = await session.scalars(stmt)
     posts = result.all()
-    print("posts:", posts)
-
     for post in posts:
-        print("+", post)
-        print("= user:", post.user)
-
-    return posts
+        return post.user
 
 
 
@@ -76,6 +69,7 @@ async def async_main():
             title="PostgreSQL news",
             user_id=admin_user.id,
         )
+        await create_user(session, username="john", email="john@example.com")
         john_user = await session.execute(select(User).filter(User.username == "john"))
         john_user = john_user.scalar_one()
         await create_post(
