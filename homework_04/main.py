@@ -1,9 +1,6 @@
 import asyncio
 from collections.abc import Sequence
-from sqlalchemy import desc
-from sqlalchemy import func
 from sqlalchemy import select
-from sqlalchemy import update
 from sqlalchemy.orm import joinedload
 from sqlalchemy.orm import selectinload
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -54,8 +51,10 @@ async def fetch_all_posts_with_authors(
     result = await session.scalars(stmt)
     posts = result.all()
     for post in posts:
-        return post.user
+        print("+", post)
+        print("= author:", post.user)
 
+    return posts
 
 
 async def async_main():
@@ -64,24 +63,26 @@ async def async_main():
         await create_user(session, username="admin", email="admin@admin.com")
         admin_user = await session.execute(select(User).filter(User.username == "admin"))
         admin_user = admin_user.scalar_one()
+        
         await create_post(
             session,
             title="PostgreSQL news",
             user_id=admin_user.id,
         )
+        
         await create_user(session, username="john", email="john@example.com")
         john_user = await session.execute(select(User).filter(User.username == "john"))
         john_user = john_user.scalar_one()
+        
         await create_post(
             session,
             title="MySQL news",
             user_id=john_user.id,
         )
-       
         
-    await asyncio.gather(
-    fetch_all_posts_with_authors(session)
-    )
+        await asyncio.gather(
+        fetch_all_posts_with_authors(session)
+        )
  
        
 def main():
