@@ -62,15 +62,11 @@ async def async_main():
     async with Session() as session:
         await create_user(session, username="lone", email="lone@admin.com")
         gane: User = await create_user(session, username="gane", email=None)
-        await create_post(
-            session=session,
-            title="Reander post",
-            user_id=gane.id,
-           
-        )
+    
+    await create_post(session=session,title="Reander post",user_id=gane.id,)
         
        
-        await fetch_all_posts_with_authors(session)
+    await fetch_all_posts_with_authors(session)
        
        
 def main():

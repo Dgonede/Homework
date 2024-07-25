@@ -22,10 +22,6 @@ async_engine = create_async_engine(PG_CONN_URI, echo=True)
 Session = async_sessionmaker(bind=async_engine)
 
 
-
-
-
-
 class Base(DeclarativeBase):
     metadata=MetaData(
        naming_convention={
@@ -45,6 +41,7 @@ class Base(DeclarativeBase):
 
 def generate_ref_code():
     return secrets.token_urlsafe(12).lower()
+
 
 class User(Base):
 
@@ -69,6 +66,7 @@ class User(Base):
             f"email={self.email!r}"
             ")"
         )
+
 
 class Post(Base):
 
