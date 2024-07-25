@@ -34,7 +34,7 @@ async def create_user(
 async def create_post(
     session: AsyncSession,
     title: str,
-    user_id: int,
+    user_id: User.id,
 ) -> Post:
     post = Post(title=title, user_id=user_id)
     session.add(post)
@@ -72,6 +72,7 @@ async def async_main():
         await create_post(
         session=session,
         title="Reander post",
+        user_id=User.id
         )
     
         
