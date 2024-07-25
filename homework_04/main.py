@@ -1,10 +1,10 @@
 import asyncio
 from collections.abc import Sequence
-
-
+from sqlalchemy import desc
+from sqlalchemy import func
 from sqlalchemy import select
-
-
+from sqlalchemy import update
+from sqlalchemy.orm import joinedload
 from sqlalchemy.orm import selectinload
 from sqlalchemy.ext.asyncio import AsyncSession
 from .models import (
@@ -28,6 +28,8 @@ async def create_user(
     session.add(user)
 
     await session.commit()
+
+    print("user created:", user)
     return user
 
 
@@ -39,7 +41,7 @@ async def create_post(
     post = Post(title=title, user_id=user_id)
     session.add(post)
     await session.commit()
-    
+    print("post created:", post)
     return post
 
 
@@ -55,18 +57,31 @@ async def fetch_all_posts_with_authors(
     )
     result = await session.scalars(stmt)
     posts = result.all()
+    print("posts:", posts)
+
+    for post in posts:
+        print("+", post)
+        print("= user:", post.user)
+
     return posts
+
+
 
 async def async_main():
     await create_tables()
     async with Session() as session:
         await create_user(session, username="lone", email="lone@admin.com")
         gane: User = await create_user(session, username="gane", email=None)
+        post_pg: Post = await create_post(
+            session=session,
+            title="Reander post",
+            user_id=gane.id,
+           
+        )
+        print("post pg:", post_pg)
         
         
-       
     await fetch_all_posts_with_authors(session)
-       
        
 def main():
     asyncio.run(async_main())
