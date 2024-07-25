@@ -68,13 +68,14 @@ async def fetch_all_posts_with_authors(
 async def async_main():
     await create_tables()
     async with Session() as session:
+        await create_user(session, username="lone",email="lone@admin.com")
         Jone: User = await create_user(session, username="Jone",email="Jone@admin.com")
-        post_pg: Post = await create_post(
-        session=session,
-        title="Reander post",
-        user_id=Jone.id
+    post_pg: Post =await create_post(
+    session=session,
+    title="Reander post",
+    user_id=Jone.id
         
-        )
+    )
     
         
         
