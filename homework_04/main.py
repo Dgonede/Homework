@@ -44,16 +44,12 @@ async def fetch_all_posts_with_authors(
     stmt = (
         select(Post)
         .options(
-            joinedload(Post.user),
+            selectinload(Post.user),
         )
         .order_by(Post.id)
     )
     result = await session.scalars(stmt)
     posts = result.all()
-    for post in posts:
-        print("+", post)
-        print("= author:", post.user)
-
     return posts
 
 
