@@ -72,7 +72,7 @@ async def async_main():
         await create_post(
         session=session,
         title="Reander post",
-        user_id=User,
+        user_id = User.id,
            
         )
     
