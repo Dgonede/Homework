@@ -44,7 +44,7 @@ async def fetch_all_posts_with_authors(
     stmt = (
         select(Post)
         .options(
-            selectinload(Post.user),
+            joinedload(Post.user),
         )
         .order_by(Post.id)
     )
@@ -81,8 +81,8 @@ async def async_main():
         )
  
        
-async def main():
-    await async_main()
+def main():
+    async_main()
 
 
 if __name__ == "__main__":
