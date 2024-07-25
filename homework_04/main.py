@@ -81,8 +81,8 @@ async def async_main():
         )
  
        
-def main():
-    async_main()
+async def main():
+    await async_main()
 
 
 if __name__ == "__main__":
