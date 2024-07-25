@@ -71,6 +71,7 @@ async def async_main():
         await create_user(session, username="admin", email="admin@admin.com")
         john: User = await create_user(session, username="john", email=None)
         greg: User = await create_user(session, username="greg", email=None)
+        
         await create_post(
             session,
             title="PostgreSQL news",
@@ -81,13 +82,10 @@ async def async_main():
             title="MySQL news",
             user_id=greg.id,
         )
-       
-    
-        
-        
         await asyncio.gather(
         fetch_all_posts_with_authors(session)
         )
+ 
        
 def main():
     async_main()
