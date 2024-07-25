@@ -69,7 +69,7 @@ async def async_main():
     await create_tables()
     async with Session() as session:
         await create_user(session, username="lone",email="lone@admin.com")
-        Jone: User = create_user(session, username="Jone",email="Jone@admin.com")
+        Jone: User = await create_user(session, username="Jone",email="Jone@admin.com")
         await create_post(
         session=session,
         title="Reander post",
