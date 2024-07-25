@@ -28,8 +28,6 @@ async def create_user(
     session.add(user)
 
     await session.commit()
-
-    print("user created:", user)
     return user
 
 
@@ -78,7 +76,7 @@ async def async_main():
         user_id=gane.id,
            
         )
-    
+    print("post pg:", post_pg)
         
         
     await fetch_all_posts_with_authors(session)
