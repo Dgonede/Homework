@@ -76,11 +76,18 @@ async def async_main():
             title="PostgreSQL news",
             user_id=admin_user.id,
         )
+        john_user = await session.execute(select(User).filter(User.username == "john"))
+        john_user = john_user.scalar_one()
+        await create_post(
+            session,
+            title="PostgreSQL news",
+            user_id=john_user.id,
+        )
        
         
-        await asyncio.gather(
-        fetch_all_posts_with_authors(session)
-        )
+    await asyncio.gather(
+    fetch_all_posts_with_authors(session)
+    )
  
        
 def main():
