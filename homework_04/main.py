@@ -48,11 +48,10 @@ async def fetch_all_posts_with_authors(
         )
         .order_by(Post.id)
     )
-    result = await session.scalars(stmt)
-    posts = result.all()
+    result = await session.execute(stmt)
+    posts = result.scalars().all()
     
-    for post in posts:
-        return post
+    return posts
 
 
 async def async_main():
