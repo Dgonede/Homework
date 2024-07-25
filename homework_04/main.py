@@ -74,7 +74,7 @@ async def async_main():
         john_user = john_user.scalar_one()
         await create_post(
             session,
-            title="PostgreSQL news",
+            title="MySQL news",
             user_id=john_user.id,
         )
        
