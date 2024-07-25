@@ -70,12 +70,12 @@ async def async_main():
     async with Session() as session:
         await create_user(session, username="lone",email="lone@admin.com")
         Jone: User = await create_user(session, username="Jone",email="Jone@admin.com")
-    post_pg: Post =await create_post(
-    session=session,
-    title="Reander post",
-    user_id=Jone.id
+        await create_post(
+        session=session,
+        title="Reander post",
+        user_id=Jone.id
         
-    )
+        )
     
         
         
