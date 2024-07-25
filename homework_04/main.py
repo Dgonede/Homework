@@ -69,24 +69,18 @@ async def async_main():
     await create_tables()
     async with Session() as session:
         await create_user(session, username="admin", email="admin@admin.com")
-        john: User = await create_user(session, username="john", email=None)
-        greg: User = await create_user(session, username="greg", email=None)
-        
-        post_pg: Post = await create_post(
+        admin_user = await session.execute(select(User).filter(User.username == "admin"))
+        admin_user = admin_user.scalar_one()
+        await create_post(
             session,
             title="PostgreSQL news",
-            user_id=john.id,
+            user_id=admin_user.id,
         )
+       
         
-        post_greg: Post = await create_post(
-            session,
-            title="MySQL news",
-            user_id=greg.id,
+        await asyncio.gather(
+        fetch_all_posts_with_authors(session)
         )
-        
-    await asyncio.gather(
-    fetch_all_posts_with_authors(session)
-    )
  
        
 def main():
