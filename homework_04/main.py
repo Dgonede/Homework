@@ -107,9 +107,10 @@ async def async_main():
             user_id=john_user.id,
         )
         
-        task = asyncio.create_task(fetch_all_posts_with_authors(session))
-        task_2 = asyncio.create_task(fetch_all_users(session))
-        await asyncio.gather(task, task_2)
+        task = asyncio.create_task(fetch_all_users(session))
+        task_2 = asyncio.create_task(fetch_users_with_posts(session))
+        task_3 = asyncio.create_task(fetch_all_posts_with_authors(session))
+        await asyncio.gather(task, task_2, task_3)
     
         
     
