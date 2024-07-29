@@ -76,7 +76,7 @@ async def async_main():
             title="MySQL news",
             user_id=john_user.id,
         )
-        task = asyncio.create_task(fetch_all_posts_with_authors())
+        task = asyncio.create_task(fetch_all_posts_with_authors(session))
         await asyncio.gather(task)
     
         
