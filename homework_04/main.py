@@ -4,6 +4,7 @@ from sqlalchemy import select
 from sqlalchemy.orm import joinedload
 from sqlalchemy.orm import selectinload
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy import desc
 from .models import (
     Session,
     async_engine, 
@@ -36,6 +37,13 @@ async def create_post(
     session.add(post)
     await session.commit()
     return post
+
+
+async def fetch_all_users(session: AsyncSession) -> Sequence[User]:
+    stmt = select(User).order_by(desc(User.username))
+    result = await session.scalars(stmt)
+    users = result.all()
+    return users
 
 
 async def fetch_all_posts_with_authors(
@@ -77,7 +85,8 @@ async def async_main():
             user_id=john_user.id,
         )
         task = asyncio.create_task(fetch_all_posts_with_authors(session))
-        await asyncio.gather(task)
+        task_2 = asyncio.create_task(fetch_all_users(session))
+        await asyncio.gather(task, task_2)
     
         
     
