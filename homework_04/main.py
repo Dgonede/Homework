@@ -46,6 +46,28 @@ async def fetch_all_users(session: AsyncSession) -> Sequence[User]:
     return users
 
 
+async def fetch_users_with_posts(
+    session: AsyncSession,
+) -> Sequence[User]:
+    stmt = (
+        select(User)
+        .options(
+            selectinload(User.posts),
+        )
+        .order_by(User.id)
+    )
+
+    print("load users w/ posts:")
+    result = await session.scalars(stmt)
+    users = result.all()
+    for user in users:
+        print("+", user)
+        for post in user.posts:
+            print("  -", post)
+
+    return users
+  
+    
 async def fetch_all_posts_with_authors(
     session: AsyncSession,
 ) -> Sequence[Post]:
@@ -84,6 +106,7 @@ async def async_main():
             title="MySQL news",
             user_id=john_user.id,
         )
+        
         task = asyncio.create_task(fetch_all_posts_with_authors(session))
         task_2 = asyncio.create_task(fetch_all_users(session))
         await asyncio.gather(task, task_2)
