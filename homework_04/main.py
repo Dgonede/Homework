@@ -1,5 +1,5 @@
 import asyncio
-from jsonplaceholder_requests import (
+from .jsonplaceholder_requests import (
     fetch_posts_data, 
     fetch_users_data,
     )
