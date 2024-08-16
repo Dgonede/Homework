@@ -47,15 +47,10 @@ def generate_ref_code():
 
 
 class User(Base):
-
-    username: Mapped[str] = mapped_column(String(32), unique=True)
+    id: Mapped[int] = mapped_column(primary_key=True, index=True)
+    name: Mapped[str] = mapped_column(String, nullable=False)
+    username: Mapped[str] = mapped_column(String, nullable=False)
     email: Mapped[str | None] = mapped_column(unique=True)
-    full_name: Mapped[str] = mapped_column(default="", server_default="")
-    ref_code: Mapped[str] = mapped_column(
-        default=generate_ref_code,
-        unique=True,
-        )
-
     posts: Mapped[list["Post"]] = relationship(back_populates="user")
 
     def __repr__(self):
@@ -65,19 +60,18 @@ class User(Base):
         return (
             f"{self.__class__.__name__}("
             f"id={self.id}, "
-            f"username={self.username!r}, "
+            f"username={self.name!r}, "
             f"email={self.email!r}"
             ")"
         )
 
 
 class Post(Base):
-
-    title: Mapped[str] = mapped_column(String(100))
-    # body: Mapped[str] = mapped_column(Text)
+    id: Mapped[int] = mapped_column(primary_key=True, index=True)
+    title: Mapped[str] = mapped_column(String)
     published_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=False))
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
-    body: Mapped[str | None] = mapped_column(String(32), unique=True)
+    body: Mapped[str | None] = mapped_column(String, unique=True)
     user: Mapped["User"] = relationship(back_populates="posts")
 
     def __repr__(self):

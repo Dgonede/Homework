@@ -1,10 +1,8 @@
 import asyncio
-from collections.abc import Sequence
-from sqlalchemy import select
-from sqlalchemy.orm import joinedload
-from sqlalchemy.orm import selectinload
-from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import desc
+from jsonplaceholder_requests import (
+    fetch_posts_data, 
+    fetch_users_data,
+    )
 from .models import (
     Session,
     async_engine, 
@@ -13,113 +11,32 @@ from .models import (
     Post, 
     )
 
+
 async def create_tables():
     async with async_engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
     
-async def create_user(
-    session: AsyncSession,
-    username: str,
-    email: str | None = None,
-) -> User:
-    user = User(username=username, email=email)
-    session.add(user)
-    await session.commit()
-    return user
-
-
-async def create_post(
-    session: AsyncSession,
-    title: str,
-    user_id: int,
-) -> Post:
-    post = Post(title=title, user_id=user_id)
-    session.add(post)
-    await session.commit()
-    return post
-
-
-async def fetch_all_users(session: AsyncSession) -> Sequence[User]:
-    stmt = select(User).order_by(desc(User.username))
-    result = await session.scalars(stmt)
-    users = result.all()
-    return users
-
-
-async def fetch_users_with_posts(
-    session: AsyncSession,
-) -> Sequence[User]:
-    stmt = (
-        select(User)
-        .options(
-            selectinload(User.posts),
-        )
-        .order_by(User.id)
-    )
-
-    print("load users w/ posts:")
-    result = await session.scalars(stmt)
-    users = result.all()
-    for user in users:
-        print("+", user)
-        for post in user.posts:
-            print("  -", post)
-
-    return users
-  
+async def add_users(session, users_data):
+    users = [User(name=user["name"], username=user["username"], email=user["email"]) for user in users_data]
+    session.add_all(users)
     
-async def fetch_all_posts_with_authors(
-    session: AsyncSession,
-) -> Sequence[Post]:
-    stmt = (
-        select(Post)
-        .options(
-            joinedload(Post.user),
-        )
-        .order_by(Post.id)
-    )
-    result = await session.execute(stmt)
-    posts = result.scalars().all()
-    
-    return posts
 
-
-async def async_main():
-    await create_tables()
-    async with Session() as session:
-        await create_user(session, username="admin", email="admin@admin.com")
-        admin_user = await session.execute(select(User).filter(User.username == "admin"))
-        admin_user = admin_user.scalar_one()
-        
-        await create_post(
-            session,
-            title="PostgreSQL news",
-            user_id=admin_user.id,
-        )
-        
-        await create_user(session, username="john", email="john@example.com")
-        john_user = await session.execute(select(User).filter(User.username == "john"))
-        john_user = john_user.scalar_one()
-        
-        await create_post(
-            session,
-            title="MySQL news",
-            user_id=john_user.id,
-        )
-        
-        await asyncio.gather(
-            fetch_all_users(session)
-            
-            )
-        
-    
-        
-    
- 
+async def add_posts(session, posts_data):
+    posts = [Post(user_id=post["userId"], title=post["title"], body=post["body"]) for post in posts_data]
+    session.add_all(posts)    
        
-async def main():
-    await async_main()
+async def async_main():
+    async with Session() as session:
+        await create_tables()
+        users_data, posts_data = await asyncio.gather(
+            fetch_users_data(),
+            fetch_posts_data(),
+        )
+        await add_users(session, users_data)
+        await add_posts(session, posts_data)
+        await session.commit()
+        await session.close()
 
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    asyncio.run(async_main())
