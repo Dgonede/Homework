@@ -15,11 +15,14 @@ from sqlalchemy.orm import mapped_column
 
 
 
-PG_CONN_URI = os.environ.get("SQLALCHEMY_PG_CONN_URI") or "postgresql+asyncpg://postgres:password@localhost/postgres"
+PG_CONN_URI = os.environ.get("SQLALCHEMY_PG_CONN_URI") or "postgresql+asyncpg://user:password@localhost:5432/blog"
 
 async_engine = create_async_engine(PG_CONN_URI, echo=True)
 
-Session = async_sessionmaker(bind=async_engine)
+Session = async_sessionmaker(
+    bind=async_engine,
+    expire_on_commit=False
+    )
 
 
 class Base(DeclarativeBase):

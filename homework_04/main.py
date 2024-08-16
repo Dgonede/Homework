@@ -5,7 +5,7 @@ from sqlalchemy.orm import joinedload
 from sqlalchemy.orm import selectinload
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import desc
-from .models import (
+from models import (
     Session,
     async_engine, 
     Base, 
@@ -107,6 +107,10 @@ async def async_main():
             user_id=john_user.id,
         )
         
+        await asyncio.gather(
+            fetch_all_users(session)
+            
+            )
         
     
         
@@ -115,10 +119,6 @@ async def async_main():
        
 async def main():
     await async_main()
-    task = asyncio.create_task(fetch_all_users())
-    task_2 = asyncio.create_task(fetch_users_with_posts())
-    task_3 = asyncio.create_task(fetch_all_posts_with_authors())
-    await asyncio.gather(task, task_2, task_3)
 
 
 if __name__ == "__main__":
