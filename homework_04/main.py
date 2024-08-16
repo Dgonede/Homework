@@ -5,7 +5,7 @@ from sqlalchemy.orm import joinedload
 from sqlalchemy.orm import selectinload
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import desc
-from models import (
+from .models import (
     Session,
     async_engine, 
     Base, 
